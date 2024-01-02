@@ -83,6 +83,19 @@ function viewAllRoles() {
         });
 }
 
+function viewAllEmployees() {
+    db.getAllEmployees()
+        .then((employees) => {
+            console.table(employees);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
+
+
 
 
 
