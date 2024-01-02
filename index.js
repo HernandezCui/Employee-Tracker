@@ -71,7 +71,17 @@ function viewAllDepartments() {
         });
 }
 
-
+function viewAllRoles() {
+    db.getAllRoles()
+        .then((roles) => {
+            console.table(roles);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
 
 
 
