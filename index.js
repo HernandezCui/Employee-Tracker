@@ -95,17 +95,29 @@ function viewAllEmployees() {
         });
 }
 
+
+// Call corresponding functions when adding departments and roles
+
 function addDepartment() {
-    db.getNewDepartment()
-        .then((newDepartment) => {
-            console.table(newDepartment);
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'departmentName',
+        message: 'Enter the name of the department',
+    })
+    .then((answer) => {
+        db.addDepartment(answer.deparmentName)
+        .then(() => {
+            console.log('Department added successfully');
             startApp();
         })
         .catch((err) => {
             console.error(err);
             startApp();
         });
+    });
 }
+
 
 function addRole() {
     db.getNewRole()
