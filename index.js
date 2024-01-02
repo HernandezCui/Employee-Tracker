@@ -47,7 +47,7 @@ function startApp() {
             break;
 
         case 'Update an employee role':
-            updateEmployee();
+            updateEmployeeRole();
             break;
         
         default: 
@@ -95,8 +95,53 @@ function viewAllEmployees() {
         });
 }
 
+function addDepartment() {
+    db.getNewDepartment()
+        .then((newDepartment) => {
+            console.table(newDepartment);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
 
+function addRole() {
+    db.getNewRole()
+        .then((newRole) => {
+            console.table(newRole);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
 
+function addEmployee() {
+    db.getNewEmployee()
+        .then((newEmployee) => {
+            console.table(newEmployee);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
+
+function updateEmployeeRole() {
+    db.getUpdatedEmployeeRole()
+        .then((employeeRole) => {
+            console.table(employeeRole);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
 
 
 
