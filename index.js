@@ -121,11 +121,23 @@ function addDepartment() {
 
 function addRole() {
     inquirer
-    .prompt({
-        type: 'input',
-        name: 'roleName',
-        message: 'Enter the name of the role'   
-    })
+    .prompt([
+        {
+            type: 'input',
+            name: 'roleName',
+            message: 'Enter the name of the role'   
+        },
+        {
+            type: 'input',
+            name:'salaryTotal',
+            message: 'Enter the salary of the role'
+        },
+        {
+            type: 'input',
+            name: 'deptId',
+            message: 'Enter the department ID for the role'
+        }
+    ])
     .then((answer) => {
         db.addRole(answer.roleName)
         .then(() => {
