@@ -57,4 +57,25 @@ function startApp() {
             db.closeConnection();
        }
     });
+
+// function to handle viewing all departments and roles
+function viewAllDepartments() {
+    db.getAllDepartments()
+        .then((departments) => {
+            console.table(departments);
+            startApp();
+        })
+        .catch((err) => {
+            console.error(err);
+            startApp();
+        });
+}
+
+
+
+
+
+
+
+
 }
