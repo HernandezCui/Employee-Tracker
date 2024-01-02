@@ -103,7 +103,7 @@ function addDepartment() {
     .prompt({
         type: 'input',
         name: 'departmentName',
-        message: 'Enter the name of the department',
+        message: 'Enter the name of the department'
     })
     .then((answer) => {
         db.addDepartment(answer.deparmentName)
@@ -120,16 +120,25 @@ function addDepartment() {
 
 
 function addRole() {
-    db.getNewRole()
-        .then((newRole) => {
-            console.table(newRole);
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'roleName',
+        message: 'Enter the name of the role'   
+    })
+    .then((answer) => {
+        db.addRole(answer.roleName)
+        .then(() => {
+            console.log('Role added successfully');
             startApp();
         })
         .catch((err) => {
             console.error(err);
             startApp();
         });
+    });
 }
+
 
 function addEmployee() {
     db.getNewEmployee()
