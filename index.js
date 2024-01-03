@@ -334,5 +334,46 @@ function deleteDepartment() {
     });
 }
 
+function deleteRole() {
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'roleId',
+        message: 'Enter the ID of the role to delete',
+    })
+    .then((answer) => {
+        db.deleteRole(answer.roleId)
+            .then(() => {
+                console.log('Role deleted successfully');
+                startApp();
+            })
+            .catch((err) => {
+                console.error(err);
+                startApp();
+            });
+    });
+}
+
+function deleteEmployee() {
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'employeeId',
+        message: 'Enter the ID of the employee to delete',
+    })
+    .then((answer) => {
+        db.deleteEmployee(answer.employeeId)
+            .then(() => {
+                console.log('Employee deleted successfully');
+                startApp();
+            })
+            .catch((err) => {
+                console.error(err);
+                startApp();
+            });
+    });
+}
+
+
 
 }
