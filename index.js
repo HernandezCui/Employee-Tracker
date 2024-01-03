@@ -49,6 +49,26 @@ function startApp() {
         case 'Update an employee role':
             updateEmployeeRole();
             break;
+
+        case 'View employees by manager':
+            viewEmployeesByManager();
+            break;
+
+        case 'Update employee by manager':
+            updateEmployeeManager();
+            break;
+
+        case 'View employees by department':
+            viewEmployeesByDepartment();
+            break;
+
+        case 'Delete department, role, or employee':
+            deleteRecord();
+            break;
+
+        case 'View total utilized budget for department':
+            viewDepartmentBudget();
+            break;
         
         default: 
             console.log('Goodbye!');
@@ -394,5 +414,7 @@ function viewDepartmentBudget() {
             });
     });
 }
+
+
 
 }
