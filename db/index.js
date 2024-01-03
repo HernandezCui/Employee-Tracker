@@ -21,6 +21,12 @@ class DB {
         .promise()
         .query('INSERT INTO department (name) VALUES (?)', [departmentName]);
     }
+    addRole(roleName, salary, departmentId) {
+        return this.connection
+        .promise()
+        .query('INSERT INTO role (title, salary, departmentId) VALUES (?, ?, ?)', [roleName, salary, departmentId]);
+    }
+    
 
 
 
