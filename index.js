@@ -216,7 +216,28 @@ function updateEmployeeRole() {
     });
 }
 
+// Bonus additions
 
+// function to view employees by manager 
+function viewEmployeesByManager() {
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'managerId',
+        message: 'Enter the ID of the manager to view their employees',
+    })
+    .then((answer) => {
+        db.getEmployeesByManager(answer.managerId)
+            .then((employees) => {
+                console.table((employees)); 
+                startApp();
+            })
+            .catch((err) => {
+                console.error(err);
+                startApp();
+            });
+    });
+}
 
 
 }
