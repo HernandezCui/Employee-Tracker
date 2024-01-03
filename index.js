@@ -177,7 +177,7 @@ function addEmployee() {
         }
     ])
     .then((answer) => {
-        db.getNewEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
+        db.addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
         .then(() => {
             console.log('Employee added successfully');
             startApp();
@@ -190,15 +190,30 @@ function addEmployee() {
 }
 
 function updateEmployeeRole() {
-    db.getUpdatedEmployeeRole()
-        .then((employeeRole) => {
-            console.table(employeeRole);
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'employeeId',
+            message: 'Enter the ID of the employee you want to update',
+        },
+        {
+            type: 'input',
+            name: 'newRoleId',
+            message: 'Enter the new role ID for the employee'
+        }
+    ])
+    .then((answer) => {
+    db.updateEmployeeRole(answer.employeeId, answer.newRoleId)
+        .then(() => {
+            console.log('Employee role updated successfully');
             startApp();
         })
         .catch((err) => {
             console.error(err);
             startApp();
         });
+    });
 }
 
 
