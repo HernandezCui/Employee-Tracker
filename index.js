@@ -285,4 +285,36 @@ function viewEmployeesByDepartment() {
     });
 }
 
+// function to delete departments, roles, and employees
+function deleteRecord() {
+    inquirer
+    .prompt({
+        type: 'list',
+        name: 'recordType',
+        message: 'Select the type of record to delete',
+        choices: ['Department', 'Role', 'Employee']
+    })
+    .then((answer) => {
+        switch (answer.recordType) {
+            case 'Department':
+                deleteDepartment();
+                break;
+            
+            case 'Role':
+                deleteRole();
+                break;
+
+            case 'Employee':
+                deleteEmployee();
+                break;
+            
+            default:
+                startApp();
+        }
+    });
+}
+
+
+
+
 }
