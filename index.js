@@ -268,4 +268,21 @@ function updateEmployeeManager() {
     });
 }
 
+// function to view employees by department
+function viewEmployeesByDepartment() {
+    inquirer
+    .prompt({
+        type:'input',
+        name: 'deptId',
+        message: 'Enter the ID of the department to view its employees'
+    })
+    .then((answer) => {
+        db.getEmployeesByDepartment(answer.deptId)
+        .then((employees) => {
+            console.table(employees);
+            startApp();
+        });
+    });
+}
+
 }
