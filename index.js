@@ -18,6 +18,7 @@ function startApp() {
             'Add a role',
             'Add a employee',
             'Update an employee role',
+            'Quit', // Added Quit option 
         ],
     })
     .then((answer) => {
@@ -70,11 +71,28 @@ function startApp() {
             viewDepartmentBudget();
             break;
         
+        case 'Quit':
+            inquirer
+            .prompt({
+                type: 'confirm',
+                name: 'confirmQuit',
+                message: 'Are you sure you want to quit?',
+                default: false,
+            })
+            .then((confirmAnswer) => {
+                if (confirmAnswer.confirmQuit) {
+                    console.log('Goodbye');
+                    // Close database if needed 
+                    db.closeConnection();
+                } else {
+                    startApp();
+                }
+            });
+            break;
+            
         default: 
-            console.log('Goodbye!');
-
-            // Close database if needed
-            db.closeConnection();
+            console.log('Invalid option selected');
+            startApp();
        }
     });
 
@@ -414,7 +432,5 @@ function viewDepartmentBudget() {
             });
     });
 }
-
-
 
 }
