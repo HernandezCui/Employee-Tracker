@@ -405,7 +405,7 @@ function viewDepartmentBudget() {
     .then((answer) => {
         db.getDepartmentBudget(answer.deptId)
             .then((budget) => {
-                console.log('Total utilized budget for the Department: $${budget}');
+                console.log(`Total utilized budget for the Department: ${budget}`);
                 startApp();
             })
             .catch((err) => {
