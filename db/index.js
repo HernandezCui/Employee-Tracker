@@ -31,6 +31,16 @@ class DB {
         .promise()
         .query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, roleId, managerId]); 
     }
+    updateEmployeeRole(employeeId, newRoleId) {
+        return this.connection
+        .promise()
+        .query('UPDATE employee SET role_id = ? WHERE id = ?', [newRoleId, employeeId]);
+    }
+    updateEmployeeManager(employeeId, newManagerId) {
+        return this.connection
+        .promise()
+        .query('UPDATE employee SET manager_id = ? WHERE id = ?', [newManagerId, employeeId]);
+    }
     
 
 
