@@ -239,5 +239,33 @@ function viewEmployeesByManager() {
     });
 }
 
+// function to handle updating employee managers
+
+function updateEmployeeManager() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'employeeID',
+            message: 'Enter the ID of the employee you want to update'
+        },
+        {
+            type: 'input',
+            name: 'newManagerId',
+            message: 'Enter the new manager ID for the employee',
+        }
+    ])
+    .then((answer) => {
+        db.updateEmployeeManager(answer.employeeId, answer.newManagerId)
+            .then(() => {
+                console.log('Employee manager updated successfully');
+                startApp();
+            })
+            .catch((err) => {
+                console.error(err);
+                startApp();
+            });
+    });
+}
 
 }
