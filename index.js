@@ -89,7 +89,7 @@ function startApp() {
                 }
             });
             break;
-            
+
         default: 
             console.log('Invalid option selected');
             startApp();
@@ -430,7 +430,7 @@ function viewDepartmentBudget() {
                 console.error(err);
                 startApp();
             });
-    });
-}
-
+        });
+    }
+    
 }
