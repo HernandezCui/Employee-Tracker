@@ -314,7 +314,25 @@ function deleteRecord() {
     });
 }
 
-
+function deleteDepartment() {
+    inquirer
+    .prompt({
+        type: 'input',
+        name: 'deptId',
+        message: 'Enter the ID of the department to delete',
+    })
+    .then((answer) => {
+        db.deleteDepartment(answer.deptId)
+            .then(() => {
+                console.log('Department deleted successfully');
+                startApp();
+            })
+            .catch((err) => {
+                console.error(err);
+                startApp();
+            });
+    });
+}
 
 
 }
