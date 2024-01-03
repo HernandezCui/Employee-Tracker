@@ -16,7 +16,11 @@ class DB {
     getAllEmployees() {
         return this.connection.promise().query('SELECT * FROM employee');
     }
-    
+    addDepartment(departmentName) {
+        return this.connection
+        .promise()
+        .query('INSERT INTO department (name) VALUES (?)', [departmentName]);
+    }
 
 
 
