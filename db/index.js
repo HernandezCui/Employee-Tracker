@@ -59,7 +59,17 @@ class DB {
     getEmployeesByRole(roleId) {
         return this.connection
         .promise()
-        .query('Select * FROM employee WHERE role_id = ?', [roleId]);
+        .query('SELECT * FROM employee WHERE role_id = ?', [roleId]);
+    }
+    deleteRole(roleId) {
+        return this.connection
+        .promise()
+        .query('DELETE FROM role WHERE id = ?', [roleId]);
+    }
+    deleteEmployee(employeeId) {
+        return this.connection
+        .promise()
+        .query('DELETE FROM employee WHERE id = ?', [employeeId]);
     }
     
    
