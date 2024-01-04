@@ -56,6 +56,11 @@ class DB {
         .promise()
         .query('SELECT * FROM role WHERE department_id = ?', [departmentId]);
     }
+    getEmployeesByRole(roleId) {
+        return this.connection
+        .promise()
+        .query('Select * FROM employee WHERE role_id = ?', [roleId]);
+    }
     
    
 
