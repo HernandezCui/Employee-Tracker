@@ -61,6 +61,11 @@ class DB {
         .promise()
         .query('SELECT * FROM employee WHERE role_id = ?', [roleId]);
     }
+    deleteDepartment(departmentId) {
+        return this.connection
+        .promise()
+        .query('DELETE FROM department WHERE id = ?', [departmentId]);
+    }
     deleteRole(roleId) {
         return this.connection
         .promise()
@@ -71,21 +76,13 @@ class DB {
         .promise()
         .query('DELETE FROM employee WHERE id = ?', [employeeId]);
     }
-    
+    getDepartmentBudget(departmentId) {
+        return this.connection
+        .promise()
+        .query('SELECT SUM(salary) as budget FROM role WHERE departmentId = ?', [departmentId]);
+    } 
+
    
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
