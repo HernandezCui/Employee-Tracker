@@ -84,6 +84,7 @@ function startApp() {
                     console.log('Goodbye');
                     // Close database if needed 
                     db.closeConnection();
+                    process.exit();
                 } else {
                     startApp();
                 }
@@ -237,12 +238,12 @@ function updateEmployeeRole() {
         },
         {
             type: 'input',
-            name: 'newRoleId',
+            name: 'roleId',
             message: 'Enter the new role ID for the employee'
         }
     ])
     .then((answer) => {
-    db.updateEmployeeRole(answer.employeeId, answer.newRoleId)
+    db.updateEmployeeRole(answer.employeeId, answer.roleId)
         .then(() => {
             console.log('Employee role updated successfully');
             startApp();
@@ -289,12 +290,12 @@ function updateEmployeeManager() {
         },
         {
             type: 'input',
-            name: 'newManagerId',
+            name: 'managerId',
             message: 'Enter the new manager ID for the employee',
         }
     ])
     .then((answer) => {
-        db.updateEmployeeManager(answer.employeeId, answer.newManagerId)
+        db.updateEmployeeManager(answer.employeeId, answer.managerId)
             .then(() => {
                 console.log('Employee manager updated successfully');
                 startApp();
@@ -432,5 +433,5 @@ function viewDepartmentBudget() {
             });
         });
     }
-    
+
 }

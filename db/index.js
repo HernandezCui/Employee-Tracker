@@ -31,15 +31,15 @@ class DB {
         .promise()
         .query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, roleId, managerId]); 
     }
-    updateEmployeeRole(employeeId, newRoleId) {
+    updateEmployeeRole(employeeId, roleId) {
         return this.connection
         .promise()
-        .query('UPDATE employee SET role_id = ? WHERE id = ?', [newRoleId, employeeId]);
+        .query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
     }
-    updateEmployeeManager(employeeId, newManagerId) {
+    updateEmployeeManager(employeeId, managerId) {
         return this.connection
         .promise()
-        .query('UPDATE employee SET manager_id = ? WHERE id = ?', [newManagerId, employeeId]);
+        .query('UPDATE employee SET manager_id = ? WHERE id = ?', [managerId, employeeId]);
     }
     getEmployeeById(employeeId) {
         return this.connection
@@ -81,8 +81,8 @@ class DB {
         .promise()
         .query('SELECT SUM(salary) as budget FROM role WHERE departmentId = ?', [departmentId]);
     } 
-
-   
 }
+
+module.exports = new DB(connection);
 
 
