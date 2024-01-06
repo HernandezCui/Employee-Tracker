@@ -5,8 +5,8 @@ const cTable = require('console.table');
 
 // function that will display onced logged in 
 function startApp() {
-    inquirer.
-    prompt({
+    inquirer
+    .prompt({
         type: 'list',
         name: 'option',
         message: 'What would you like to do?',
@@ -21,81 +21,115 @@ function startApp() {
             'Quit', // Added Quit option 
         ],
     })
-    .then((answer) => {
-       switch (answer.option) {
-        case 'View all departments':
-            viewAllDepartments();
-            break;
+    .then(handleOption);
+}
 
-        case 'View all roles':
-            viewAllRoles();
-            break;
-
-        case 'View all employees':
-            viewAllEmployees();
-            break;
-
-        case 'Add a department':
-            addDepartment();
-            break;
-
-        case 'Add a role':
-            addRole();
-            break;
-        
-        case 'Add a employee':
-            addEmployee();
-            break;
-
-        case 'Update an employee role':
-            updateEmployeeRole();
-            break;
-
-        case 'View employees by manager':
-            viewEmployeesByManager();
-            break;
-
-        case 'Update employee by manager':
-            updateEmployeeManager();
-            break;
-
-        case 'View employees by department':
-            viewEmployeesByDepartment();
-            break;
-
-        case 'Delete department, role, or employee':
-            deleteRecord();
-            break;
-
-        case 'View total utilized budget for department':
-            viewDepartmentBudget();
-            break;
-        
+function handleOption(answer) {
+    switch (answer.option) {
         case 'Quit':
-            inquirer
-            .prompt({
-                type: 'confirm',
-                name: 'confirmQuit',
-                message: 'Are you sure you want to quit?',
-                default: false,
-            })
-            .then((confirmAnswer) => {
-                if (confirmAnswer.confirmQuit) {
-                    console.log('Goodbye');
-                    // Close database if needed 
-                    db.closeConnection();
-                    process.exit();
-                } else {
-                    startApp();
-                }
-            });
+            confirmQuit();
             break;
+        default:
+            executeAction(answer.option);
+    }
+}
 
-        default: 
-            console.log('Invalid option selected');
-            startApp();
-       }
-    });
+function executeAction(option) {
+    const actionMap = {
+        'View all departments': viewAllDepartments,
+        'View all roles': viewAllRoles,
+        'View all employees': viewAllEmployees,
+        'Add a department': addDepartment,
+        'Add a role': addRole,
+        'Add a employee': addEmployee,
+        'Update an employee role': updateEmployeeRole,
+    };
+
+    const action = actionMap[option];
+    if(action) {
+        action();
+    } else {
+        console.log('Invalid option selected');
+        startApp();
+    }
+}
+
+
+    // .then((answer) => {
+    //    switch (answer.option) {
+    //     case 'View all departments':
+    //         viewAllDepartments();
+    //         break;
+
+    //     case 'View all roles':
+    //         viewAllRoles();
+    //         break;
+
+    //     case 'View all employees':
+    //         viewAllEmployees();
+    //         break;
+
+    //     case 'Add a department':
+    //         addDepartment();
+    //         break;
+
+    //     case 'Add a role':
+    //         addRole();
+    //         break;
+        
+    //     case 'Add a employee':
+    //         addEmployee();
+    //         break;
+
+    //     case 'Update an employee role':
+    //         updateEmployeeRole();
+    //         break;
+
+    //     case 'View employees by manager':
+    //         viewEmployeesByManager();
+    //         break;
+
+    //     case 'Update employee by manager':
+    //         updateEmployeeManager();
+    //         break;
+
+    //     case 'View employees by department':
+    //         viewEmployeesByDepartment();
+    //         break;
+
+    //     case 'Delete department, role, or employee':
+    //         deleteRecord();
+    //         break;
+
+    //     case 'View total utilized budget for department':
+    //         viewDepartmentBudget();
+    //         break;
+        
+    //     case 'Quit':
+    //         inquirer
+    //         .prompt({
+    //             type: 'confirm',
+    //             name: 'confirmQuit',
+    //             message: 'Are you sure you want to quit?',
+    //             default: false,
+    //         })
+    //         .then((confirmAnswer) => {
+    //             if (confirmAnswer.confirmQuit) {
+    //                 console.log('Goodbye');
+    //                 // Close database if needed 
+    //                 db.closeConnection();
+    //                 process.exit();
+    //             } else {
+    //                 startApp();
+    //             }
+    //         });
+    //         break;
+
+    //     default: 
+    //         console.log('Invalid option selected');
+    //         startApp();
+    //    }
+    // });
 
 // function to handle viewing all departments and roles
 function viewAllDepartments() {
