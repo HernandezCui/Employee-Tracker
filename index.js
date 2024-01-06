@@ -54,6 +54,95 @@ function executeAction(option) {
     }
 }
 
+function confirmQuit() {
+    inquirer
+    .prompt({
+        type: 'confirm',
+        name: 'confirmQuit',
+        message: 'Are you sure you want to quit?',
+        default: 'false',
+    })
+    .then((confirmAnswer) => {
+        confirmAnswer.confirmQuit ? handleQuit() : startApp();
+    })
+}
+
+function handleQuit() {
+    console.log('Goodbye');
+    db.closeConnection();
+}
+
+// function to handle viewing all departments and roles
+function viewAllDepartments() {
+    db.getAllDepartments().then(displayTable).catch(handleError).finally(startApp);
+}
+
+function viewAllRoles() {
+    db.getAllRoles().then(displayTable).catch(handleError).finally(startApp);
+}
+
+function viewAllEmployees() {
+    db.getAllEmployees().then(displayTable).catch(handleError).finally(startApp);
+}
+
+
+// Call corresponding functions when adding departments and roles
+function addDepartment() {
+    inquirer 
+    .prompt({
+        type: 'input',
+        name: 'departmentName',
+        message: 'Enter the name of the department',
+    })
+    .then((answer) => db.addDepartment(answer.departmentName).then(handleSuccess).catch(handleError))
+    .finally(startApp);
+}
+
+function addRole() {
+    const prompts = [
+        { type: 'input', name: 'roleName', message: 'Enter the name of the role' },
+        { type: 'input', name: 'salaryTotal', message: 'Enter the salary of the role' },
+        { type: 'input', name: 'deptId', message: 'Enter the department ID for the role'},
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.addRole(answer.roleName, answer.salaryTotal, answer.deptId)
+    .then(handleSuccess).catch(handleError))
+    .finally(startApp);
+}
+
+function addEmployee() {
+    const prompts = [
+        { type: 'input', name: 'employeeFirstName', message: 'Enter the first name of the employee' },
+        { type: 'input', name: 'employeeLastName', message: 'Enter the last name of the employee' },
+        { type: 'input', name: 'roleId', message: 'Enter the employees role id number' },
+        { type: 'input', name: 'managerId', message: 'Enter the managers id number' }, 
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
+    .then(handleSuccess).catch(handleError))
+    .finally(startApp);
+}
+
+function updateEmployeeRole() {
+    const prompts = [
+        { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee you want to update' },
+        { type: 'input', name: 'roleId', message: 'Enter the new role ID for the employee' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.updateEmployeeRole(answer.employeeId, answer.RoleId)
+    .then(handleSuccess).catch(handleError))
+    .finally(startApp);
+}
+
+
+
+
+
+
+
 
     // .then((answer) => {
     //    switch (answer.option) {
@@ -131,163 +220,6 @@ function executeAction(option) {
     //    }
     // });
 
-// function to handle viewing all departments and roles
-function viewAllDepartments() {
-    db.getAllDepartments()
-        .then((departments) => {
-            console.table(departments);
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-}
-
-function viewAllRoles() {
-    db.getAllRoles()
-        .then((roles) => {
-            console.table(roles);
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-}
-
-function viewAllEmployees() {
-    db.getAllEmployees()
-        .then((employees) => {
-            console.table(employees);
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-}
-
-
-// Call corresponding functions when adding departments and roles
-
-function addDepartment() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'departmentName',
-        message: 'Enter the name of the department'
-    })
-    .then((answer) => {
-        db.addDepartment(answer.departmentName)
-        .then(() => {
-            console.log('Department added successfully');
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-    });
-}
-
-
-function addRole() {
-    inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'roleName',
-            message: 'Enter the name of the role'   
-        },
-        {
-            type: 'input',
-            name:'salaryTotal',
-            message: 'Enter the salary of the role'
-        },
-        {
-            type: 'input',
-            name: 'deptId',
-            message: 'Enter the department ID for the role'
-        }
-    ])
-    .then((answer) => {
-        db.addRole(answer.roleName, answer.salaryTotal, answer.deptId)
-        .then(() => {
-            console.log('Role added successfully');
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-    });
-}
-
-
-function addEmployee() {
-    inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'employeeFirstName',
-            message: 'Enter the employees First Name'
-        },
-        {
-            type: 'input',
-            name: 'employeeLastName',
-            message: 'Enter the employees Last Name'
-        },
-        {
-            type: 'input',
-            name: 'roleId',
-            message: 'Enter the employees role id number'
-        },
-        {
-            type: 'input',
-            name: 'managerId',
-            message: 'Enter the managers id number'
-        }
-    ])
-    .then((answer) => {
-        db.addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
-        .then(() => {
-            console.log('Employee added successfully');
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-    });
-}
-
-function updateEmployeeRole() {
-    inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'employeeId',
-            message: 'Enter the ID of the employee you want to update',
-        },
-        {
-            type: 'input',
-            name: 'roleId',
-            message: 'Enter the new role ID for the employee'
-        }
-    ])
-    .then((answer) => {
-    db.updateEmployeeRole(answer.employeeId, answer.roleId)
-        .then(() => {
-            console.log('Employee role updated successfully');
-            startApp();
-        })
-        .catch((err) => {
-            console.error(err);
-            startApp();
-        });
-    });
-}
 
 // Bonus additions
 
