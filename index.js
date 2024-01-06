@@ -43,6 +43,12 @@ function executeAction(option) {
         'Add a role': addRole,
         'Add a employee': addEmployee,
         'Update an employee role': updateEmployeeRole,
+        'View employees by manager': viewEmployeesByManager,
+        'Update an employee by manager': updateEmployeesByManager,
+        'View employees by department': viewEmployeesByDepartment,
+        'Delete department': deleteDepartment,
+        'Delete role': deleteRole,
+        'Delete employee': deleteEmployee,
     };
 
     const action = actionMap[option];
@@ -138,266 +144,82 @@ function updateEmployeeRole() {
 }
 
 
-
-
-
-
-
-
-    // .then((answer) => {
-    //    switch (answer.option) {
-    //     case 'View all departments':
-    //         viewAllDepartments();
-    //         break;
-
-    //     case 'View all roles':
-    //         viewAllRoles();
-    //         break;
-
-    //     case 'View all employees':
-    //         viewAllEmployees();
-    //         break;
-
-    //     case 'Add a department':
-    //         addDepartment();
-    //         break;
-
-    //     case 'Add a role':
-    //         addRole();
-    //         break;
-        
-    //     case 'Add a employee':
-    //         addEmployee();
-    //         break;
-
-    //     case 'Update an employee role':
-    //         updateEmployeeRole();
-    //         break;
-
-    //     case 'View employees by manager':
-    //         viewEmployeesByManager();
-    //         break;
-
-    //     case 'Update employee by manager':
-    //         updateEmployeeManager();
-    //         break;
-
-    //     case 'View employees by department':
-    //         viewEmployeesByDepartment();
-    //         break;
-
-    //     case 'Delete department, role, or employee':
-    //         deleteRecord();
-    //         break;
-
-    //     case 'View total utilized budget for department':
-    //         viewDepartmentBudget();
-    //         break;
-        
-    //     case 'Quit':
-    //         inquirer
-    //         .prompt({
-    //             type: 'confirm',
-    //             name: 'confirmQuit',
-    //             message: 'Are you sure you want to quit?',
-    //             default: false,
-    //         })
-    //         .then((confirmAnswer) => {
-    //             if (confirmAnswer.confirmQuit) {
-    //                 console.log('Goodbye');
-    //                 // Close database if needed 
-    //                 db.closeConnection();
-    //                 process.exit();
-    //             } else {
-    //                 startApp();
-    //             }
-    //         });
-    //         break;
-
-    //     default: 
-    //         console.log('Invalid option selected');
-    //         startApp();
-    //    }
-    // });
-
-
 // Bonus additions
 
 // function to view employees by manager 
 function viewEmployeesByManager() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'managerId',
-        message: 'Enter the ID of the manager to view their employees',
-    })
-    .then((answer) => {
-        db.getEmployeesByManager(answer.managerId)
-            .then((employees) => {
-                console.table((employees)); 
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-    });
+    const prompts = [
+        { type: 'input', name: 'managerId', message: 'Enter the ID of the manager to view employees' },
+
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.viewEmployeesByManager(answer.managerId)
+    .then(displayTable).catch(handleError))
+    .finally(startApp);
 }
 
-// function to handle updating employee managers
+// function to update employees by manager
 
-function updateEmployeeManager() {
-    inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'employeeID',
-            message: 'Enter the ID of the employee you want to update'
-        },
-        {
-            type: 'input',
-            name: 'managerId',
-            message: 'Enter the new manager ID for the employee',
-        }
-    ])
-    .then((answer) => {
-        db.updateEmployeeManager(answer.employeeId, answer.managerId)
-            .then(() => {
-                console.log('Employee manager updated successfully');
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-    });
+function updateEmployeesByManager() {
+    const prompts = [
+        { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee you want to update' },
+        { type: 'input', name: 'managerId', message: 'Enter the new maanger ID for the employee' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.updateEmployeesByManager(answer.employeeId, answer.managerId)
+    .then(handleSuccess).catch(handleError))
+    .finally(startApp);
 }
 
 // function to view employees by department
+
 function viewEmployeesByDepartment() {
-    inquirer
-    .prompt({
-        type:'input',
-        name: 'deptId',
-        message: 'Enter the ID of the department to view its employees'
-    })
-    .then((answer) => {
-        db.getEmployeesByDepartment(answer.deptId)
-        .then((employees) => {
-            console.table(employees);
-            startApp();
-        });
-    });
+    const prompts = [
+        { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to view employees' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.viewEmployeesByDepartment(answer.departmentId)
+    .then(displayTable).catch(handleError))
+    .finally(startApp);
 }
 
 // function to delete departments, roles, and employees
-function deleteRecord() {
-    inquirer
-    .prompt({
-        type: 'list',
-        name: 'recordType',
-        message: 'Select the type of record to delete',
-        choices: ['Department', 'Role', 'Employee']
-    })
-    .then((answer) => {
-        switch (answer.recordType) {
-            case 'Department':
-                deleteDepartment();
-                break;
-            
-            case 'Role':
-                deleteRole();
-                break;
-
-            case 'Employee':
-                deleteEmployee();
-                break;
-            
-            default:
-                startApp();
-        }
-    });
-}
 
 function deleteDepartment() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'deptId',
-        message: 'Enter the ID of the department to delete',
-    })
-    .then((answer) => {
-        db.deleteDepartment(answer.deptId)
-            .then(() => {
-                console.log('Department deleted successfully');
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-    });
+    const prompts = [
+        { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to delete' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.deleteDepartment(answer.departmentId)
+    .then(handleSuccess).catch(handleError))
+    .finally(startApp);
 }
 
 function deleteRole() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'roleId',
-        message: 'Enter the ID of the role to delete',
-    })
-    .then((answer) => {
-        db.deleteRole(answer.roleId)
-            .then(() => {
-                console.log('Role deleted successfully');
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-    });
+    const prompts = [
+        { type: 'input', name: 'roleId', message: 'Enter the ID of the role to delete' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.deleteRole(answer.roleId)
+    .then(handleSucces).catch(handleError))
+    .finally(startApp);
 }
 
 function deleteEmployee() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'employeeId',
-        message: 'Enter the ID of the employee to delete',
-    })
-    .then((answer) => {
-        db.deleteEmployee(answer.employeeId)
-            .then(() => {
-                console.log('Employee deleted successfully');
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-    });
+    const prompts = [
+        { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee to delete' },
+    ];
+
+    inquirer.prompt(prompts)
+    .then((answer) => db.deleteEmployee(answer.employeeId)
+    .then(handleSucces).catch(handleError))
+    .finally(startApp);
 }
+ 
 
 // function to view total utilized budget of a department 
-function viewDepartmentBudget() {
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'deptId',
-        message: 'Enter the ID of the department to view its budget'
-    })
-    .then((answer) => {
-        db.getDepartmentBudget(answer.deptId)
-            .then((budget) => {
-                console.log(`Total utilized budget for the Department: ${budget}`);
-                startApp();
-            })
-            .catch((err) => {
-                console.error(err);
-                startApp();
-            });
-        });
-    }
-
-}
