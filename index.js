@@ -1,7 +1,7 @@
 // Dependencies 
 const inquirer = require('inquirer');
 const db = require('./db');
-const cTable = require('console.table');
+require('console.table');
 
 // function that will display onced logged in 
 function startApp() {
@@ -49,6 +49,7 @@ function executeAction(option) {
         'Delete department': deleteDepartment,
         'Delete role': deleteRole,
         'Delete employee': deleteEmployee,
+        'View department budget': viewDepartmentBudget,
     };
 
     const action = actionMap[option];
@@ -206,7 +207,7 @@ function deleteRole() {
 
     inquirer.prompt(prompts)
     .then((answer) => db.deleteRole(answer.roleId)
-    .then(handleSucces).catch(handleError))
+    .then(handleSuccess).catch(handleError))
     .finally(startApp);
 }
 
@@ -217,9 +218,33 @@ function deleteEmployee() {
 
     inquirer.prompt(prompts)
     .then((answer) => db.deleteEmployee(answer.employeeId)
-    .then(handleSucces).catch(handleError))
+    .then(handleSuccess).catch(handleError))
     .finally(startApp);
 }
  
 
 // function to view total utilized budget of a department 
+function viewDepartmentBudget() {
+    const prompts = [
+        { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to view the budget' },
+    ];
+
+    inquirer.promp(prompts)
+    .then((answer) => db.viewDepartmentBudget(answer.departmentId)
+    .then(displayTable).catch(handleError))
+    .finally(startApp);
+}
+
+function displayTable(data) {
+    console.table(data);
+}
+
+function handleError(err) {
+    console.error(err);
+}
+
+function handleSuccess() {
+    console.log('Operation Successful');
+}
+
+startApp();
