@@ -101,7 +101,12 @@ function addDepartment() {
         name: 'departmentName',
         message: 'Enter the name of the department',
     })
-    .then((answer) => db.addDepartment(answer.departmentName).then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .addDepartment(answer.departmentName)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -113,8 +118,12 @@ function addRole() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.addRole(answer.roleName, answer.salaryTotal, answer.deptId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .addRole(answer.roleName, answer.salaryTotal, answer.deptId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -127,8 +136,12 @@ function addEmployee() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -139,8 +152,12 @@ function updateEmployeeRole() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.updateEmployeeRole(answer.employeeId, answer.RoleId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .updateEmployeeRole(answer.employeeId, answer.roleId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -155,8 +172,12 @@ function viewEmployeesByManager() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.viewEmployeesByManager(answer.managerId)
-    .then(displayTable).catch(handleError))
+    .then((answer) => 
+        db
+            .viewEmployeesByManager(answer.managerId)
+            .then(displayTable)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -169,8 +190,12 @@ function updateEmployeesByManager() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.updateEmployeesByManager(answer.employeeId, answer.managerId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .updateEmployeesByManager(answer.employeeId, answer.managerId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -182,8 +207,12 @@ function viewEmployeesByDepartment() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.viewEmployeesByDepartment(answer.departmentId)
-    .then(displayTable).catch(handleError))
+    .then((answer) => 
+        db
+            .viewEmployeesByDepartment(answer.departmentId)
+            .then(displayTable)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -195,8 +224,12 @@ function deleteDepartment() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.deleteDepartment(answer.departmentId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .deleteDepartment(answer.departmentId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -206,8 +239,12 @@ function deleteRole() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.deleteRole(answer.roleId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .deleteRole(answer.roleId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
@@ -217,8 +254,12 @@ function deleteEmployee() {
     ];
 
     inquirer.prompt(prompts)
-    .then((answer) => db.deleteEmployee(answer.employeeId)
-    .then(handleSuccess).catch(handleError))
+    .then((answer) => 
+        db
+            .deleteEmployee(answer.employeeId)
+            .then(handleSuccess)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
  
@@ -229,9 +270,13 @@ function viewDepartmentBudget() {
         { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to view the budget' },
     ];
 
-    inquirer.promp(prompts)
-    .then((answer) => db.viewDepartmentBudget(answer.departmentId)
-    .then(displayTable).catch(handleError))
+    inquirer.prompt(prompts)
+    .then((answer) => 
+        db
+            .viewDepartmentBudget(answer.departmentId)
+            .then(displayTable)
+            .catch(handleError)
+    )
     .finally(startApp);
 }
 
