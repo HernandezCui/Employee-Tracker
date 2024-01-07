@@ -41,11 +41,6 @@ class DB {
         .promise()
         .query('UPDATE employee SET manager_id = ? WHERE id = ?', [managerId, employeeId]);
     }
-    getEmployeeById(employeeId) {
-        return this.connection
-        .promise()
-        .query('SELECT * FROM employee WHERE id = ?', [employeeId]);
-    }
     viewEmployeesByManager(managerId) {
         return this.connection
         .promise()
