@@ -21,22 +21,22 @@ class DB {
         .promise()
         .query('INSERT INTO department (name) VALUES (?)', [departmentName]);
     }
-    addRole(roleName, salary, departmentId) {
+    addRole(roleName, salaryTotal, departmentId) {
         return this.connection
         .promise()
-        .query('INSERT INTO role (title, salary, departmentId) VALUES (?, ?, ?)', [roleName, salary, departmentId]);
+        .query('INSERT INTO role (title, salary, departmentId) VALUES (?, ?, ?)', [roleName, salaryTotal, departmentId]);
     }
-    addEmployee(firstName, lastName, roleId, managerId) {
+    addEmployee(employeeFirstName, employeeLastName, roleId, managerId) {
         return this.connection
         .promise()
-        .query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, roleId, managerId]); 
+        .query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [employeeFirstName, employeeLastName, roleId, managerId]); 
     }
     updateEmployeeRole(employeeId, roleId) {
         return this.connection
         .promise()
-        .query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
+        .query('UPDATE employee SET role_id = ? WHERE id = ?', [employeeId, roleId]);
     }
-    updateEmployeeManager(employeeId, managerId) {
+    updateEmployeesByManager(employeeId, managerId) {
         return this.connection
         .promise()
         .query('UPDATE employee SET manager_id = ? WHERE id = ?', [managerId, employeeId]);

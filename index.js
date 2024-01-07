@@ -114,7 +114,7 @@ function addRole() {
     const prompts = [
         { type: 'input', name: 'roleName', message: 'Enter the name of the role' },
         { type: 'input', name: 'salaryTotal', message: 'Enter the salary of the role' },
-        { type: 'input', name: 'deptId', message: 'Enter the department ID for the role'},
+        { type: 'input', name: 'departmentId', message: 'Enter the department ID for the role'},
     ];
 
     inquirer.prompt(prompts)
