@@ -34,7 +34,7 @@ class DB {
     updateEmployeeRole(employeeId, roleId) {
         return this.connection
         .promise()
-        .query('UPDATE employee SET role_id = ? WHERE id = ?', [employeeId, roleId]);
+        .query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]);
     }
     updateEmployeesByManager(employeeId, managerId) {
         return this.connection
@@ -46,20 +46,15 @@ class DB {
         .promise()
         .query('SELECT * FROM employee WHERE id = ?', [employeeId]);
     }
-    getManagerEmployees(managerId) {
+    viewEmployeesByManager(managerId) {
         return this.connection
         .promise()
         .query('SELECT * FROM employee WHERE manager_id = ?', [managerId]);
     }
-    getRolesByDepartment(departmentId) {
+    viewEmployeesByDepartment(departmentId) {
         return this.connection
         .promise()
-        .query('SELECT * FROM role WHERE department_id = ?', [departmentId]);
-    }
-    getEmployeesByRole(roleId) {
-        return this.connection
-        .promise()
-        .query('SELECT * FROM employee WHERE role_id = ?', [roleId]);
+        .query('SELECT * FROM employee WHERE department_id = ?', [departmentId]);
     }
     deleteDepartment(departmentId) {
         return this.connection
@@ -76,11 +71,14 @@ class DB {
         .promise()
         .query('DELETE FROM employee WHERE id = ?', [employeeId]);
     }
-    getDepartmentBudget(departmentId) {
+    viewDepartmentBudget(departmentId) {
         return this.connection
         .promise()
-        .query('SELECT SUM(salary) as budget FROM role WHERE departmentId = ?', [departmentId]);
+        .query('SELECT SUM(salary) as budget FROM role WHERE department_id = ?', [departmentId]);
     } 
+    closeConnection() {
+        this.connection.end();
+    }
 }
 
 module.exports = new DB(connection);

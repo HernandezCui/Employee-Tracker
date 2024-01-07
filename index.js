@@ -67,7 +67,7 @@ function confirmQuit() {
         type: 'confirm',
         name: 'confirmQuit',
         message: 'Are you sure you want to quit?',
-        default: 'false',
+        default: false,
     })
     .then((confirmAnswer) => {
         confirmAnswer.confirmQuit ? handleQuit() : startApp();
