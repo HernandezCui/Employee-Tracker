@@ -325,6 +325,60 @@ const viewEmployeesByDepartment = async () => {
 };
 
 
+const deleteDepartment = async () => {
+    const departments = await db.getAllDepartments();
+    const departmentChoices = departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'department_id',
+            message: 'Select the department to delete:',
+            choices: departmentChoices,
+        },
+    ]);
+
+    try {
+        await db.deleteDepartment(answer.department_id);
+        console.log('Department deleted successfully.');
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+const deleteRole = async () => {
+    const roles = await db.getAllRoles();
+    const rolechoices = roles.map((role) => ({
+        name: role.title,
+        value: role.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'role_id',
+            message: 'Select the role to delete:',
+            choices: roleChoices,
+        },
+    ]);
+
+    try {
+        await db.deleteRole(answer.role_id);
+        console.log('Role deleted Successfully.');
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+
+
 
 // // function to update employees by manager
 
