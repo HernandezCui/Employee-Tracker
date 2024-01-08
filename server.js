@@ -403,118 +403,30 @@ const deleteEmployee = async () => {
     }
 };
 
+const budgetByDepartment = async () => {
+    const departments = await db.getAllDepartments();
+    const departmentChoices = departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+    }));
 
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'department_id',
+            message: 'Select the department to view budget:',
+            choices: departmentChoices,
+        },
+    ]);
 
+    try {
+        const [rows] = await db.budgetByDepartment(answer.department_id);
+        console.table(rows);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
-// // function to update employees by manager
-
-// function updateEmployeesByManager() {
-//     const prompts = [
-//         { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee you want to update' },
-//         { type: 'input', name: 'managerId', message: 'Enter the new maanger ID for the employee' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .updateEmployeesByManager(answer.employeeId, answer.managerId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
-
-// // function to view employees by department
-
-// function viewEmployeesByDepartment() {
-//     const prompts = [
-//         { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to view employees' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .viewEmployeesByDepartment(answer.departmentId)
-//             .then(displayTable)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
-
-// // function to delete departments, roles, and employees
-
-// function deleteDepartment() {
-//     const prompts = [
-//         { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to delete' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .deleteDepartment(answer.departmentId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
-
-// function deleteRole() {
-//     const prompts = [
-//         { type: 'input', name: 'roleId', message: 'Enter the ID of the role to delete' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .deleteRole(answer.roleId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
-
-// function deleteEmployee() {
-//     const prompts = [
-//         { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee to delete' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .deleteEmployee(answer.employeeId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
- 
-
-// // function to view total utilized budget of a department 
-// function viewDepartmentBudget() {
-//     const prompts = [
-//         { type: 'input', name: 'departmentId', message: 'Enter the ID of the department to view the budget' },
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .viewDepartmentBudget(answer.departmentId)
-//             .then(displayTable)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
-
-// function displayTable(data) {
-//     console.table(data);
-// }
-
-// function handleError(err) {
-//     console.error(err);
-// }
-
-// function handleSuccess() {
-//     console.log('Operation Successful');
-// }
-
-// startApp();
+mainScreen();
