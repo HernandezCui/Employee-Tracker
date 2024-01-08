@@ -25,7 +25,7 @@ const mainScreen = () => {
             { name: 'Add a employee', value: addEmployee },
             { name: 'Update an employee role', value: updateEmployeeRole },
             { name: 'View employees by manager', value: viewEmployeesByManager },
-            { name: 'Update employee by manager', value: updateEmployeeByManager },
+            { name: 'Update employee by manager', value: updateEmployeesByManager },
             { name: 'View employees by department', value: viewEmployeesByDepartment },
             { name: 'Delete department', value: deleteDepartment },
             { name: 'Delete Role', value: deleteRole },
@@ -266,25 +266,40 @@ const viewEmployeesByManager = async () => {
 };
 
 
+const updateEmployeesByManager = async () => {
+    const employees = await db.getAllEmployees();
+    const employeeChoices = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+    }));
 
-// // Bonus additions
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee_id',
+            message: 'Select the employee whose manager you want to update:',
+            choices: employeeChoices,
+        },
+        {
+            type: 'list',
+            name: 'manager_id',
+            message: 'Select the new manager for the employee:',
+            choices: [...employeeChoices, { name: 'None', value: null }],
+        },
+    ]);
 
-// // function to view employees by manager 
-// function viewEmployeesByManager() {
-//     const prompts = [
-//         { type: 'input', name: 'managerId', message: 'Enter the ID of the manager to view employees' },
+    try {
+        await db.updateEmployeesByManager(answer.employee_id, answer.manager_id);
+        console.log('Employee manager updated successfully.');
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
-//     ];
 
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .viewEmployeesByManager(answer.managerId)
-//             .then(displayTable)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
+
 
 // // function to update employees by manager
 
