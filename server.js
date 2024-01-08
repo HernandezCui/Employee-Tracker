@@ -298,6 +298,31 @@ const updateEmployeesByManager = async () => {
     }
 };
 
+const viewEmployeesByDepartment = async () => {
+    const departments = await db.getAllDepartments();
+    const departmentChoices = departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'department_id',
+            message: 'Select the department to view employees:',
+            choices: departmentChoices,
+        },
+    ]);
+
+    try {
+        const [rows] = await db.viewEmployeesByDepartment(answer.department_id);
+        console.table(rows);
+    } catch (err) {
+        console.error(err); 
+    } finally {
+        mainScreen();
+    }
+};
 
 
 
