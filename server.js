@@ -10,8 +10,8 @@ const exit = () => {
 }; 
 
 // function that will display onced logged in 
-const mainScreen = () => {
-    const answer = await.inquirer.prompt([
+const mainScreen = async () => {
+    const answer = await inquirer.prompt([
     {
         type: 'list',
         name: 'main',
