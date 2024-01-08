@@ -66,7 +66,7 @@ class DB {
         .promise()
         .query('DELETE FROM employee WHERE id = ?', [employeeId]);
     }
-    viewDepartmentBudget(departmentId) {
+    budgetByDepartment(departmentId) {
         return this.connection
         .promise()
         .query('SELECT SUM(salary) as budget FROM role WHERE department_id = ?', [departmentId]);

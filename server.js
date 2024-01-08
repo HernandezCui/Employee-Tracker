@@ -88,7 +88,7 @@ const addDepartment = async () => {
             type: 'input',
             name: 'name',
             message: 'Enter the department name',
-            validate: validateInput
+            validate: validateInput,
         },
     ]);
 
