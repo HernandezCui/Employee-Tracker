@@ -238,21 +238,33 @@ const updateEmployeeRole = async () => {
     }
 };
 
-// function updateEmployeeRole() {
-//     const prompts = [
-//         { type: 'input', name: 'employeeId', message: 'Enter the ID of the employee you want to update' },
-//         { type: 'input', name: 'roleId', message: 'Enter the new role ID for the employee' },
-//     ];
 
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .updateEmployeeRole(answer.employeeId, answer.roleId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
+const viewEmployeesByManager = async () => {
+    const employees = await db.getAllEmployees();
+    const managerChoices = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'manager_id',
+            message: 'Select the manager to view employees:',
+            choices: managerChoices,
+        },
+    ]);
+
+    try {
+        const [rows] = await db.viewEmployeesByManager(answer.manager_id);
+        console.table(rows);
+    } catch(err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
 
 
 // // Bonus additions
