@@ -10,11 +10,11 @@ const exit = () => {
 }; 
 
 // function that will display onced logged in 
-const startApp = () => {
+const mainScreen = () => {
     const answer = await.inquirer.prompt([
     {
         type: 'list',
-        name: 'options',
+        name: 'main',
         message: 'What would you like to do?',
         choices: [
             { name: 'View all departments', value: viewAllDepartments },
@@ -36,10 +36,19 @@ const startApp = () => {
     },
 ]);
 
-answer.options();
+answer.main();
 };
 
-
+const viewAllDepartments = async () => {
+    try {
+        const [rows] = await db.getAllDepartments();
+        console.table(rows);
+    } catch(err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
 
 
