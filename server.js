@@ -149,6 +149,56 @@ const addRole = async () => {
     }
 };
 
+const addEmployee = async () => {
+    const roles = await db.getAllRoles();
+    const roleChoices = roles.map((role) => ({
+        name: role.title,
+        value: role.id,
+    }));
+
+    const employees = await db.getAllEmployees();
+    const managerChoices = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: 'Enter the employees first name',
+            validate: validateInput,
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'Enter the employees last name last name',
+            validate: validateInput,
+        },
+        {
+            type: 'list',
+            name: 'role_id',
+            message: 'What is the employees role?',
+            choices: roleChoices,
+        },
+        {
+            type: 'list',
+            name: 'manager_id',
+            message: 'Who is the employees manager?',
+            choices: [{ name: 'None', value: null }, ...managerChoices],
+        },
+    ]);
+
+    try {
+        await db.addEmployee(answer.first_name, answer.last_name, answer.role_id, answer.manager_id);
+        const [rows] = await db.getAllEmployees();
+        console.table(rows);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
 
 // function addRole() {
