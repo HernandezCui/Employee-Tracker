@@ -200,41 +200,43 @@ const addEmployee = async () => {
     }
 };
 
+const updateEmployeeRole = async () => {
+    const employees = await db.getAllEmployees();
+    const employeeChoices = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+    }));
 
-// function addRole() {
-//     const prompts = [
-//         { type: 'input', name: 'roleName', message: 'Enter the name of the role' },
-//         { type: 'input', name: 'salaryTotal', message: 'Enter the salary of the role' },
-//         { type: 'input', name: 'departmentId', message: 'Enter the department ID for the role'},
-//     ];
+    const roles = await db.getAllRoles();
+    const roleChoices = roles.map((role) => ({
+        name: role.title,
+        value: role.id,
+    }));
 
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .addRole(answer.roleName, answer.salaryTotal, answer.departmentId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee_id',
+            message: 'Select the employee whose role you want to update:',
+            choices: employeeChoices,
+        },
+        {
+            type: 'list',
+            name: 'role_id',
+            message: 'Select the new role for the employee:',
+            choices: roleChoices,
+        },
+    ]);
 
-// function addEmployee() {
-//     const prompts = [
-//         { type: 'input', name: 'employeeFirstName', message: 'Enter the first name of the employee' },
-//         { type: 'input', name: 'employeeLastName', message: 'Enter the last name of the employee' },
-//         { type: 'input', name: 'roleId', message: 'Enter the employees role id number' },
-//         { type: 'input', name: 'managerId', message: 'Enter the managers id number' }, 
-//     ];
-
-//     inquirer.prompt(prompts)
-//     .then((answer) => 
-//         db
-//             .addEmployee(answer.employeeFirstName, answer.employeeLastName, answer.roleId, answer.managerId)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
+    try {
+        await db.updateEmployeeRole(answer.employee_id, answer.role_id);
+        console.log('Employee role updated Successfully.');
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
 // function updateEmployeeRole() {
 //     const prompts = [
