@@ -30,7 +30,7 @@ const mainScreen = () => {
             { name: 'Delete department', value: deleteDepartment },
             { name: 'Delete Role', value: deleteRole },
             { name: 'Delete Employee', value: deleteEmployee },
-            { name: 'View department budget' , value: viewDepartmentBudget },
+            { name: 'View total budget of a department' , value: budgetByDepartment },
             { name: 'Quit', value: exit },
         ],
     },
@@ -39,6 +39,7 @@ const mainScreen = () => {
 answer.main();
 };
 
+// Functions for the main options 
 const viewAllDepartments = async () => {
     try {
         const [rows] = await db.getAllDepartments();
@@ -50,123 +51,105 @@ const viewAllDepartments = async () => {
     }
 };
 
+const viewAllRoles = async () => {
+    try {
+        const [rows] = await db.getAllRoles();
+        console.table(rows);
+    } catch(err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+const viewAllEmployees = async () => {
+    try {
+        const [rows] = await db.getAllEmployees();
+        console.table(rows);
+    } catch(err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+const validateInput = (value) => {
+    if (value) {
+        return true;
+    } else {
+        console.log('\n Please enter a value');
+        return false;
+    }
+};
+
+const addDepartment = async () => {
+    const answer = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Enter the department name',
+            validate: validateInput
+        },
+    ]);
+
+    const departmentName = answer.name;
+
+    try {
+        await db.addDepartment(departmentName);
+        const [rows] = await db.getAllDepartments();
+        console.table(rows);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+const addRole = async () => {
+    const departments = await db.getAllDepartments();
+    const departmentChoices = departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Enter the name of the role',
+            validate: validateInput, 
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the salary of the role',
+            validate: (value) => {
+                if (isNaN(value) || parseFloat(value) <= 0) {
+                    return 'Please enter a valid positive bumber for the Salary.';
+                }
+                return true;
+            },
+        },
+        {
+            type: 'list',
+            name: 'departmentId',
+            message: 'Which department does the role belong to?',
+            choices: departmentChoices,
+        },
+    ]);
+    
+    try {
+        await db.addRole(answer.title, answer.salary, answer.departmentId);
+        const [rows] = await db.getAllRoles();
+        console.table(rows);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//     );
-//         type: 'list',
-//         name: 'option',
-//         message: 'What would you like to do?',
-//         choices: [
-//             'View all departments',
-//             'View all roles',
-//             'View all employees',
-//             'Add a department',
-//             'Add a role',
-//             'Add a employee',
-//             'Update an employee role',
-//             'Quit', // Added Quit option 
-//         ],
-//     })
-//     .then(handleOption);
-// }
-
-// function handleOption(answer) {
-//     switch (answer.option) {
-//         case 'Quit':
-//             confirmQuit();
-//             break;
-//         default:
-//             executeAction(answer.option);
-//     }
-// }
-
-// function executeAction(option) {
-//     const actionMap = {
-//         'View all departments': viewAllDepartments,
-//         'View all roles': viewAllRoles,
-//         'View all employees': viewAllEmployees,
-//         'Add a department': addDepartment,
-//         'Add a role': addRole,
-//         'Add a employee': addEmployee,
-//         'Update an employee role': updateEmployeeRole,
-//         'View employees by manager': viewEmployeesByManager,
-//         'Update an employee by manager': updateEmployeesByManager,
-//         'View employees by department': viewEmployeesByDepartment,
-//         'Delete department': deleteDepartment,
-//         'Delete role': deleteRole,
-//         'Delete employee': deleteEmployee,
-//         'View department budget': viewDepartmentBudget,
-//     };
-
-//     const action = actionMap[option];
-//     if(action) {
-//         action();
-//     } else {
-//         console.log('Invalid option selected');
-//         startApp();
-//     }
-// }
-
-// function confirmQuit() {
-//     inquirer
-//     .prompt({
-//         type: 'confirm',
-//         name: 'confirmQuit',
-//         message: 'Are you sure you want to quit?',
-//         default: false,
-//     })
-//     .then((confirmAnswer) => {
-//         confirmAnswer.confirmQuit ? handleQuit() : startApp();
-//     })
-// }
-
-// function handleQuit() {
-//     console.log('Goodbye');
-//     db.closeConnection();
-// }
-
-// // function to handle viewing all departments and roles
-// function viewAllDepartments() {
-//     db.getAllDepartments().then(displayTable).catch(handleError).finally(startApp);
-// }
-
-// function viewAllRoles() {
-//     db.getAllRoles().then(displayTable).catch(handleError).finally(startApp);
-// }
-
-// function viewAllEmployees() {
-//     db.getAllEmployees().then(displayTable).catch(handleError).finally(startApp);
-// }
-
-
-// // Call corresponding functions when adding departments and roles
-// function addDepartment() {
-//     inquirer 
-//     .prompt({
-//         type: 'input',
-//         name: 'departmentName',
-//         message: 'Enter the name of the department',
-//     })
-//     .then((answer) => 
-//         db
-//             .addDepartment(answer.departmentName)
-//             .then(handleSuccess)
-//             .catch(handleError)
-//     )
-//     .finally(startApp);
-// }
 
 // function addRole() {
 //     const prompts = [
