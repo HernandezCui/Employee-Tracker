@@ -3,6 +3,12 @@ const inquirer = require('inquirer');
 const db = require('./db');
 require('console.table');
 
+const exit = () => {
+    console.log('Goodbye!');
+    db.closeConnection();
+    process.exit(0);
+}; 
+
 // function that will display onced logged in 
 function startApp() {
     inquirer
