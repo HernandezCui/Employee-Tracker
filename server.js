@@ -120,7 +120,7 @@ function addRole() {
     inquirer.prompt(prompts)
     .then((answer) => 
         db
-            .addRole(answer.roleName, answer.salaryTotal, answer.deptId)
+            .addRole(answer.roleName, answer.salaryTotal, answer.departmentId)
             .then(handleSuccess)
             .catch(handleError)
     )
