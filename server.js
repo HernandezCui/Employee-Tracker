@@ -353,7 +353,7 @@ const deleteDepartment = async () => {
 
 const deleteRole = async () => {
     const roles = await db.getAllRoles();
-    const rolechoices = roles.map((role) => ({
+    const roleChoices = roles.map((role) => ({
         name: role.title,
         value: role.id,
     }));
@@ -370,6 +370,32 @@ const deleteRole = async () => {
     try {
         await db.deleteRole(answer.role_id);
         console.log('Role deleted Successfully.');
+    } catch (err) {
+        console.error(err);
+    } finally {
+        mainScreen();
+    }
+};
+
+const deleteEmployee = async () => {
+    const employees = await db.getAllEmployees();
+    const employeeChoices = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+    }));
+
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee_id',
+            message: 'Select the employee to delete:',
+            choices: employeeChoices,
+        },
+    ]);
+
+    try {
+        await db.deleteEmployee(answer.employee_id);
+        console.log('Employee deleted Successfully.');
     } catch (err) {
         console.error(err);
     } finally {
