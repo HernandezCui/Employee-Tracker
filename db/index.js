@@ -3,7 +3,7 @@ const connection = require('./connection');
 
 
 // DB commands
-class DB {
+class db {
     constructor(connection) {
         this.connection = connection;
     }
@@ -76,6 +76,6 @@ class DB {
     }
 }
 
-module.exports = new DB(connection);
+module.exports = new db(connection);
 
 
