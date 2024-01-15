@@ -21,12 +21,11 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE employee (
-    id INT PRIMARY KEY AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
     CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
     manager_id INT,
-    FOREIGN KEY (role_id) REFERENCES role(id),
     CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
