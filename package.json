@@ -1,13 +1,18 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "A command-line application to manage a company's employee database",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "employee",
+    "tracker",
+    "mysql2",
+    "nodejs"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
