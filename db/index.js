@@ -81,4 +81,3 @@ findDepartmentBudget() {
 }
 
 module.exports = new db(connection);
-
