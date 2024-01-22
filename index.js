@@ -2,54 +2,39 @@ const inquirer = require("inquirer");
 const db = require("./db");
 require("console.table");
 
-async function mainMenu() {
-  const { menu } = await inquirer.prompt([
+const exit = () => {
+  console.log("Bye!");
+  process.exit(0);
+};
+
+const mainMenu = async () => {
+  const answer = await inquirer.prompt([
     {
       type: "list",
       name: "menu",
       message: "What would you like to do?",
       choices: [
-        "View all departments",
-        "View all roles",
-        "View all employees",
-        "Add a department",
-        "Add a role",
-        "Add an employee",
-        "Update an employee role",
-        "Delete a department",
-        "Delete a role",
-        "Delete an employee",
-        "Exit",
+        { name: "View all departments", value: viewDepartments },
+        { name: "View all roles", value: viewRoles },
+        { name: "View all employees", value: viewEmployees },
+        { name: "Add a department", value: addDepartment },
+        { name: "Add a role", value: addRole },
+        { name: "Add an employee", value: addEmployee },
+        { name: "Update an employee role", value: updateEmployeeRole },
+        { name: "Update employee manager", value: updateEmployeeManager },
+        { name: "View employees by manager", value: viewByManager },
+        { name: "View employees by department", value: viewByDepartment },
+        { name: "Delete a department", value: deleteDepartment },
+        { name: "Delete a role", value: deleteRole },
+        { name: "Delete an employee", value: deleteEmployee },
+        { name: "View total utilized budget by department", value: budgetByDepartment},
+        { name: "Exit", value: exit },
       ],
     },
   ]);
 
-  switch (menu) {
-    case "View all departments":
-      return viewDepartments();
-    case "View all roles":
-      return viewRoles();
-    case "View all employees":
-      return viewEmployees();
-    case "Add a department":
-      return addDepartment();
-    case "Add a role":
-      return addRole();
-    case "Add an employee":
-      return addEmployee();
-    case "Update an employee role":
-      return updateEmployeeRole();
-    case "Delete a department":
-      return deleteDepartment();
-    case "Delete a role":
-      return deleteRole();
-    case "Delete an employee":
-      return deleteEmployee();
-    case "Exit":
-      console.log("Bye!");
-      process.exit();
-  }
-}
+  answer.menu();
+};
 
 async function viewDepartments() {
   const departments = await db.findAllDepartments();
@@ -225,6 +210,57 @@ async function deleteEmployee() {
   });
   await db.deleteAnEmployee(employeeId);
   console.log(`Deleted employee.`);
+  mainMenu();
+}
+
+async function updateEmployeeManager() {
+  const { employeeId, managerId } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "employeeId",
+      message: "Which employee's manager do you want to update? (Enter Employee ID)",
+    },
+    {
+      type: "input",
+      name: "managerId",
+      message: "What is the new manager's ID for the employee? (Enter Manager ID)",
+    },
+  ]);
+  await db.updateAnEmployeeManager(employeeId, managerId);
+  console.log(`Updated employee's manager.`);
+  mainMenu();
+}
+
+async function viewByManager() {
+  const { managerId } = await inquirer.prompt({
+    type: "input",
+    name: "managerId",
+    message: "Enter Manager ID to view employees under that manager:",
+  });
+  const employees = await db.findEmployeesByManager(managerId);
+  console.table(employees);
+  mainMenu();
+}
+
+async function viewByDepartment() {
+  const { departmentId } = await inquirer.prompt({
+    type: "input",
+    name: "departmentId",
+    message: "Enter Department ID to view employees in that department:",
+  });
+  const employees = await db.findEmployeesByDepartment(departmentId);
+  console.table(employees);
+  mainMenu();
+}
+
+async function budgetByDepartment() {
+  const { departmentId } = await inquirer.prompt({
+    type: "input",
+    name: "departmentId",
+    message: "Enter Department ID to view the total utilized budget:",
+  });
+  const budget = await db.calculateBudgetByDepartment(departmentId);
+  console.log(`Total Utilized Budget for Department ${departmentId}: $${budget}`);
   mainMenu();
 }
 
