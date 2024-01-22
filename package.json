@@ -1,7 +1,7 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Description     This assignment was to create a command line application that allows business owners to view and manage the departments, roles, and employees in their company, so that they can organize and plan their business. In this application they will be presented with a table showing the department names, employee names, the role of their employees, their salary, and the employees manager. They will be allowed to update any information weather that be to add or remove.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,9 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "console.table": "^0.10.0",
-    "dotenv": "^16.3.2",
     "inquirer": "^8.2.4",
-    "install": "^0.13.0",
     "mysql2": "^3.7.1"
-  }
+  },
+  "devDependencies": {}
 }
