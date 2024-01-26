@@ -1,29 +1,34 @@
 USE company;
 
-INSERT INTO department(id, name)
-VALUES
-(1, "Sales"),
-(2, "Engineering"),
-(3, "Finance"),
-(4, "Legal");
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE employee;
+TRUNCATE TABLE roles;
+TRUNCATE TABLE department;
+SET FOREIGN_KEY_CHECKS = 1;
 
-INSERT INTO roles(id, title, salary, department_id)
+INSERT INTO department(name)
 VALUES
-(1, "Sales Lead", 100000, 1),
-(2, "Salesperson", 80000, 1),
-(3, "Lead Engineer", 150000, 2),
-(4, "Software Engineer", 120000, 2),
-(5, "Accountant", 125000, 3),
-(6, "Legal Team Lead", 250000, 4),
-(7, "Lawyer", 190000, 4);
+('Sales'),
+('Engineering'),
+('Finance'),
+('HR');
 
-INSERT INTO employee(id, first_name, last_name, role_id, manager_id)
+INSERT INTO roles(title, salary, department_id)
 VALUES
-(1, "John", "Doe", 1, 1),
-(2, "Mike", "Chan", 2, 2),
-(3, "Ashley", "Rodriguez", 3, 3),
-(4, "Kevin", "Tupik", 4, 1),
-(5, "Malia", "Brown", 5, 2),
-(6, "Sarah", "Lourd", 6, 3),
-(7, "Tom", "Allen", 7, 2),
-(8, "Christian", "Eckenrode", 3, 3);
+('Sales Lead', 100000, 1),
+('Salesperson', 80000, 1),
+('Lead Engineer', 150000, 2),
+('Software Engineer', 120000, 2),
+('Accountant', 125000, 3),
+('HR Manager', 250000, 4),
+('HR Representative', 190000, 4);
+
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES
+('John', 'Deer', 1, NULL),
+('Dave', 'Jones', 2, 1),
+('Alexa', 'Rodriguez', 3, NULL),
+('Ryan', 'Gomez', 4, 3),
+('Malika', 'Brown', 5, NULL),
+('Tara', 'Smith', 6, NULL),
+('Ricky', 'Bobby', 7, 6);
