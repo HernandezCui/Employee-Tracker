@@ -139,6 +139,12 @@ async function addEmployee() {
       const roles = await db.findAllRoles();
       const managers = await db.findAllEmployees();
 
+      if (roles.length === 0) {
+          console.log("Error: No roles found. Please add a role before adding an employee.");
+          mainMenu();
+          return;
+      }
+
       const answers = await inquirer.prompt([
           {
               type: 'input',
@@ -170,6 +176,12 @@ async function addEmployee() {
           role_id: answers.role_id,
           manager_id: answers.manager_id
       };
+
+      if (!employeeData.role_id) {
+          console.log('Error: Please select a role for the employee.');
+          mainMenu();
+          return;
+      }
 
       await db.addAnEmployee(employeeData);
       console.log('Employee added successfully!');
