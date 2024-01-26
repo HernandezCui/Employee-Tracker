@@ -18,10 +18,12 @@ Clone the repository, navigate to the project folder directory on your command l
 
 ## Usage
 
+
 Run the following command on your command line to run the application: 
 
 ```node index.js```
 
+Video demonstration here: https://youtu.be/Grhg-qXyWWw
 ## Credits 
 
 Worked on this project together with Ahmed Danawi 
