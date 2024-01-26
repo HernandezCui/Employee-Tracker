@@ -135,47 +135,93 @@ async function addRole() {
 }
 
 async function addEmployee() {
-    const answers = await inquirer.prompt([
-        {
-            type: 'input',
-            name: 'first_name',
-            message: "What is the employee's first name?"
-        },
-        {
-            type: 'input',
-            name: 'last_name',
-            message: "What is the employee's last name?"
-        },
-        {
-            type: 'input',
-            name: 'role_id',
-            message: "What is the employee's role ID?"
-        },
-        {
-            type: 'input',
-            name: 'manager_id',
-            message: "What is the employee's manager ID? (Leave blank if no manager)"
-        }
-        
-    ]);
+  try {
+      const roles = await db.findAllRoles();
+      const managers = await db.findAllEmployees();
 
-    const employeeData = {
-        first_name: answers.first_name,
-        last_name: answers.last_name,
-        role_id: parseInt(answers.role_id),
-        manager_id: answers.manager_id ? parseInt(answers.manager_id) : null
-    };
+      const answers = await inquirer.prompt([
+          {
+              type: 'input',
+              name: 'first_name',
+              message: "What is the employee's first name?"
+          },
+          {
+              type: 'input',
+              name: 'last_name',
+              message: "What is the employee's last name?"
+          },
+          {
+              type: 'list',
+              name: 'role_id',
+              message: "Select the employee's role:",
+              choices: roles.map(role => ({ name: role.title, value: role.id }))
+          },
+          {
+              type: 'list',
+              name: 'manager_id',
+              message: "Select the employee's manager (or leave blank if none):",
+              choices: [{ name: 'None', value: null }, ...managers.map(manager => ({ name: `${manager.first_name} ${manager.last_name}`, value: manager.id }))]
+          }
+      ]);
+
+      const employeeData = {
+          first_name: answers.first_name,
+          last_name: answers.last_name,
+          role_id: answers.role_id,
+          manager_id: answers.manager_id
+      };
+
+      await db.addAnEmployee(employeeData);
+      console.log('Employee added successfully!');
+      mainMenu();
+  } catch (err) {
+      console.error("Error adding employee:", err);
+      mainMenu();
+  }
+}
+
+// async function addEmployee() {
+//     const answers = await inquirer.prompt([
+//         {
+//             type: 'input',
+//             name: 'first_name',
+//             message: "What is the employee's first name?"
+//         },
+//         {
+//             type: 'input',
+//             name: 'last_name',
+//             message: "What is the employee's last name?"
+//         },
+//         {
+//             type: 'input',
+//             name: 'role_id',
+//             message: "What is the employee's role ID?"
+//         },
+//         {
+//             type: 'input',
+//             name: 'manager_id',
+//             message: "What is the employee's manager ID? (Leave blank if no manager)"
+//         }
+        
+//     ]);
+
+//     const employeeData = {
+//         first_name: answers.first_name,
+//         last_name: answers.last_name,
+//         role_id: parseInt(answers.role_id),
+//         manager_id: answers.manager_id ? parseInt(answers.manager_id) : null
+//     };
 
     
-    if (isNaN(employeeData.role_id) || isNaN(employeeData.manager_id) && employeeData.manager_id !== null) {
-        console.log('Invalid role ID or manager ID. Please enter a valid number.');
-        return addEmployee();
-    }
+//     if (isNaN(employeeData.role_id) || isNaN(employeeData.manager_id) && employeeData.manager_id !== null) {
+//         console.log('Invalid role ID or manager ID. Please enter a valid number.');
+//         return addEmployee();
+//     }
 
-    await db.addAnEmployee(employeeData);
-    console.log('Employee added successfully!');
-    mainMenu();
-};
+//     await db.addAnEmployee(employeeData);
+//     console.log('Employee added successfully!');
+//     mainMenu();
+// };
 
 async function updateEmployeeRole() {
   const { employeeId, roleId } = await inquirer.prompt([
